@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Loyalty{% endblock %}
+
+{% block content %}
+<h1>Loyalty Calculator</h1>
+<form method="POST" action="{{ url_for('loyalty') }}">
+    {{ form.hidden_tag() }}
+    <div>{{ form.name1.label }} {{ form.name1() }}</div>
+    <div>{{ form.name2.label }} {{ form.name2() }}</div>
+    <div>{{ form.submit() }}</div>
+</form>
+
+<h1>Loyalty List</h1>
+<input type="text" id="search" placeholder="Search for names..">
+
+<table id="loyaltyTable">
+    <thead>
+        <tr>
+            <th onclick="sortTable(0)">Name 1</th>
+            <th onclick="sortTable(1)">Name 2</th>
+            <th onclick="sortTable(2)">Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for loyalty in loyalties %}
+            <tr>
+                <td>{{ loyalty.name1 }}</td>
+                <td>{{ loyalty.name2 }}</td>
+                <td>{{ loyalty.score }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    // Search functionality
+    document.getElementById('search').addEventListener('keyup', function() {
+        let filter = this.value.toUpperCase();
+        let rows = document.querySelector("#loyaltyTable tbody").rows;
+        
+        for (let i = 0; i < rows.length; i++) {
+            let firstCol = rows[i].cells[0].textContent.toUpperCase();
+            let secondCol = rows[i].cells[1].textContent.toUpperCase();
+            if (firstCol.indexOf(filter) > -1 || secondCol.indexOf(filter) > -1) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    });
+
+    // Sort functionality
+    function sortTable(n) {
+        let table = document.getElementById("loyaltyTable");
+        let rows = table.rows;
+        let switching = true;
+        let shouldSwitch;
+        let dir = "asc"; 
+        let switchCount = 0;
+
+        while (switching) {
+            switching = false;
+            let rowsArray = Array.from(rows).slice(1);
+
+            for (let i = 0; i < rowsArray.length - 1; i++) {
+                shouldSwitch = false;
+                let x = rowsArray[i].getElementsByTagName("TD")[n];
+                let y = rowsArray[i + 1].getElementsByTagName("TD")[n];
+                
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                rowsArray[i].parentNode.insertBefore(rowsArray[i + 1], rowsArray[i]);
+                switching = true;
+                switchCount++;
+            } else {
+                if (switchCount === 0 && dir === "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+</script>
+{% endblock %}

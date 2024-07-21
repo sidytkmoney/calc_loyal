@@ -28,11 +28,32 @@ table {
     border-collapse: collapse;
 }
 
-table, th, td {
+th, td {
     border: 1px solid black;
+    padding: 8px;
+    text-align: left;
 }
 
-th, td {
+th {
+    cursor: pointer;
+}
+
+.flash-messages {
+    margin: 20px 0;
+}
+
+.flash {
     padding: 10px;
-    text-align: left;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.flash-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.flash-danger {
+    background-color: #f8d7da;
+    color: #721c24;
 }
