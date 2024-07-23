@@ -1,37 +1,50 @@
 {% extends "base.html" %}
 
-{% block title %}Loyalty{% endblock %}
+{% block title %}Loyalty Dashboard{% endblock %}
 
 {% block content %}
-<h1>Loyalty Calculator</h1>
-<form method="POST" action="{{ url_for('loyalty') }}">
-    {{ form.hidden_tag() }}
-    <div>{{ form.name1.label }} {{ form.name1() }}</div>
-    <div>{{ form.name2.label }} {{ form.name2() }}</div>
-    <div>{{ form.submit() }}</div>
-</form>
+<div class="row">
+    <div class="col-md-6">
+        <h2 class="text-center text-danger">Loyalty Calculator</h2>
+        <form method="POST" action="{{ url_for('loyalty') }}">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.name1.label(class="form-label") }}
+                {{ form.name1(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.name2.label(class="form-label") }}
+                {{ form.name2(class="form-control") }}
+            </div>
+            <div class="form-group text-center">
+                {{ form.submit(class="btn btn-danger btn-block") }}
+            </div>
+        </form>
+    </div>
 
-<h1>Loyalty List</h1>
-<input type="text" id="search" placeholder="Search for names..">
-
-<table id="loyaltyTable">
-    <thead>
-        <tr>
-            <th onclick="sortTable(0)">Name 1</th>
-            <th onclick="sortTable(1)">Name 2</th>
-            <th onclick="sortTable(2)">Score</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for loyalty in loyalties %}
-            <tr>
-                <td>{{ loyalty.name1 }}</td>
-                <td>{{ loyalty.name2 }}</td>
-                <td>{{ loyalty.score }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="col-md-6">
+        <h2 class="text-center text-danger">Loyalty List</h2>
+        <input type="text" id="search" class="form-control mb-3" placeholder="Search for names..">
+        <table class="table table-bordered" id="loyaltyTable">
+            <thead class="thead-dark">
+                <tr>
+                    <th onclick="sortTable(0)">Name 1</th>
+                    <th onclick="sortTable(1)">Name 2</th>
+                    <th onclick="sortTable(2)">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loyalty in loyalties %}
+                    <tr>
+                        <td>{{ loyalty.name1 }}</td>
+                        <td>{{ loyalty.name2 }}</td>
+                        <td>{{ loyalty.score }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <script>
     // Search functionality

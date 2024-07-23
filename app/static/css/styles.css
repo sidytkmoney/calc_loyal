@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Calibri', sans-serif;
     margin: 0;
     padding: 0;
     display: flex;
@@ -9,7 +9,22 @@ body {
     background-color: #f4f4f4;
 }
 
+
+.navbar-brand {
+    color: #c21807 !important;
+    font-weight: bold;
+}
+
+.nav-link {
+    color: #333 !important;
+}
+
 h1 {
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #c21807;
     margin-bottom: 20px;
 }
 
@@ -26,6 +41,10 @@ form div {
 table {
     width: 100%;
     border-collapse: collapse;
+}
+
+.table thead th {
+    cursor: pointer;
 }
 
 th, td {
@@ -56,4 +75,13 @@ th {
 .flash-danger {
     background-color: #f8d7da;
     color: #721c24;
+}
+
+.alert {
+    margin-bottom: 20px;
+}
+
+
+input#search {
+    margin-bottom: 20px;
 }
